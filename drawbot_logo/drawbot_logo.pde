@@ -4,14 +4,14 @@
 
 
 Turtle mainTurtle;
-int currLoop;
+
 void setup()
 {
 	size(625, 350);
 	frameRate(10);
 	mainTurtle = new Turtle();
 	mainTurtle.moveTo(width * .5, height * .5);
-	currLoop=0;
+
 }
 
 void draw()
@@ -23,22 +23,23 @@ void draw()
 	mainTurtle.rotateBy(180);
 	*/
 
-	zigZag(mainTurtle.a, 5, 18, 90);
-	mainTurtle.rotateBy(5 * (currLoop%4));
-	currLoop++;
+	zigZag(mainTurtle, 15, 8, radians(45));
+	mainTurtle.rotateBy(5 * (frameCount % 4));
+
+	
 }
 
-void zigZag(float _startAngle, float _segmentCount, float _segLength, float _segAngle)
+void zigZag(Turtle _mainTurtle, float _segmentCount, float _segLength, float _segAngle)
 {
-	mainTurtle.rotateTo(_startAngle);
-	mainTurtle.rotateBy(_segAngle);
-	mainTurtle.forwardLine(_segLength*.5);
+	// _mainTurtle.rotateTo(_startAngle);
+	_mainTurtle.rotateBy(_segAngle);
+	_mainTurtle.forwardLine(_segLength * .5);
 	int dir = 1;
-	for(int i=0; i<_segmentCount; i++){
-		dir = (i%2==0) ? 1 : -1;
-		mainTurtle.rotateBy( _segAngle * 2 * dir );
-		mainTurtle.forwardLine(_segLength);
+	for (int i = 0; i < _segmentCount; i++) {
+		dir = (i % 2 == 0) ? 1 : -1;
+		_mainTurtle.rotateBy(_segAngle * 2 * dir);
+		_mainTurtle.forwardLine(_segLength);
 	}
-	mainTurtle.rotateBy(_segAngle * -dir);
-	mainTurtle.forwardLine(_segLength*.5);
+	_mainTurtle.rotateBy(_segAngle * -dir);
+	_mainTurtle.forwardLine(_segLength * .5);
 }
