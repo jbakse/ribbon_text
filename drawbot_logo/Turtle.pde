@@ -3,18 +3,34 @@ public class Turtle
 	float x;
 	float y;
 	float a;
+	boolean visible = true;
 
-	public void Turtle()
+	public Turtle()
 	{
-		x = 0;
-		y = 0;
-		a = 0;
+		this(0.0,0.0,0.0);
+	}
+
+	public Turtle(float _x, float _y, float _a)
+	{
+		this(_x, _y, _a, true);
+	}
+
+	public Turtle(float _x, float _y, float _a, boolean _visible)
+	{
+		x = _x;
+		y = _y;
+		a = _a;
+		visible = _visible;
 	}
 
 	public void moveTo(float _x, float _y)
 	{
 		x = _x;
 		y = _y;
+	}
+
+	public void setVisible(boolean _visible){
+		visible = _visible;
 	}
 
 	public void moveBy(float _x, float _y)
@@ -62,9 +78,16 @@ public class Turtle
 	{
 		float newX = x + cos(a) * _distance;
 		float newY = y + sin(a) * _distance;
-		line(x, y, newX, newY);
+		if(visible){
+			line(x, y, newX, newY);
+		}
 		x = newX;
 		y = newY;
+	}
+
+	public Turtle clone()
+	{
+		return new Turtle(x, y, a, visible);
 	}
 
 }

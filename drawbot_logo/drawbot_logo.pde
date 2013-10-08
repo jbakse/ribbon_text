@@ -11,22 +11,36 @@ void setup()
 	frameRate(10);
 	mainTurtle = new Turtle();
 	mainTurtle.moveTo(width * .5, height * .5);
+	drawOnce();
 }
 
 void draw()
 {
+	if(mousePressed){
+		drawOnce();
+	}
+}
 
+void drawOnce()
+{
 	//zigZag(mainTurtle, 15, 8, radians(45));
 	//mainTurtle.rotateBy(5 * (frameCount % 4));
 	background(230);
-	float rows = 6;
-	float cols = 20;
-	float w = width/cols;
-	float h = height/rows;
+	
+	float boxW=100;
+	float boxH=100;
+	float boxX=(width-boxW)/2;
+	float boxY=(height-boxH)/2;
+	float rows = 4;
+	float cols = 4;
+	float w = boxW/cols;
+	float h = boxH/rows;
+	
 
-	for(int r=(int)(rows/2); r<rows; r++){
+	mainTurtle.setVisible(true);
+	for(int r=0; r<rows; r++){
 		for(int c=0; c<cols; c++){	
-			block(mainTurtle, c*w, r*h, w, h, (c+r)%2, random(.05, .7));
+			block(mainTurtle, boxX + (c*w), boxY + (r*h), w, h, (c+r)%2, random(.05, .7));
 		}
 	}
 
@@ -41,11 +55,16 @@ void draw()
 		if (delta > 1){
 			delta -= .2;
 		}
+		//! HIDING MAIN LINE
+		mainTurtle.setVisible(false);
 		mainTurtle.forwardLine(10);
 		mainTurtle.rotateBy(delta);
+		mainTurtle.setVisible(true);
+		Turtle zigTurtle = mainTurtle.clone();
+		int dir=1;
+		if(i%2==0) dir = -1;
+		zigZag(zigTurtle, 4, 6, zigTurtle.a + (radians(90) * dir));
 	}
-
-
 }
 
 void zigZag(Turtle _turtle, float _segmentCount, float _segLength, float _segAngle)
