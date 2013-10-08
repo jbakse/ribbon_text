@@ -24,11 +24,28 @@ void draw()
 	float w = width/cols;
 	float h = height/rows;
 
-	for(int r=0; r<rows; r++){
+	for(int r=(int)(rows/2); r<rows; r++){
 		for(int c=0; c<cols; c++){	
 			block(mainTurtle, c*w, r*h, w, h, (c+r)%2, random(.05, .7));
 		}
 	}
+
+	mainTurtle.moveTo(width * .5, height * .5);
+	mainTurtle.rotateTo(radians(270));
+	float delta = random(-.5, .5);
+	for (int i = 0; i < 100; i++){
+		delta += random(-.1, .1);
+		if (delta < -1){
+			delta += .2;
+		}
+		if (delta > 1){
+			delta -= .2;
+		}
+		mainTurtle.forwardLine(10);
+		mainTurtle.rotateBy(delta);
+	}
+
+
 }
 
 void zigZag(Turtle _turtle, float _segmentCount, float _segLength, float _segAngle)
