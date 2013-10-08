@@ -41,6 +41,7 @@ void zigZag(Turtle _turtle, float _segmentCount, float _segLength, float _segAng
 		dir = (i % 2 == 0) ? 1 : -1;
 		_turtle.rotateBy(_segAngle * 2 * dir);
 		_turtle.forwardLine(_segLength);
+		
 	}
 	_turtle.rotateBy(_segAngle * -dir);
 	_turtle.forwardLine(_segLength * .5);
