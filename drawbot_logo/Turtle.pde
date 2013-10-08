@@ -42,6 +42,11 @@ public class Turtle
 		a = _a;
 	}
 
+	public void rotateToDeg(float _aDeg)
+	{
+		a = radians(_aDeg);
+	}
+
 	public void rotateBy(float _a)
 	{
 		a += _a;
