@@ -63,7 +63,8 @@ void drawOnce()
 		Turtle zigTurtle = mainTurtle.clone();
 		int dir=1;
 		if(i%2==0) dir = -1;
-		zigZag(zigTurtle, 4, 6, zigTurtle.a + (radians(90) * dir));
+		zigTurtle.rotateBy(radians(90)*dir);
+		zigZag(zigTurtle, 4, 6, radians(random(15, 80)));
 	}
 }
 
