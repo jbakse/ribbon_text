@@ -108,7 +108,6 @@ void block(Turtle _turtle, float _x, float _y, float _width, float _height, int 
 		}
 	}
 	//*/
-
 }
 
 float clamp(float _val, float _min, float _max)
