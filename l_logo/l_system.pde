@@ -9,20 +9,32 @@ public class L_Set
     	rules = new ArrayList<L_Rule>();
     }
     public void step()
-    {
+    {	
+    	for (L_Symbol symbol : symbols){
+    		symbol.touched = false;
+    	}
         for (L_Rule rule : rules)
         {
-            testRule(rule);
+            while(testRule(rule) == true);
         }
     }
 
-    public void testRule(L_Rule rule)
+    public void run(){
+    	for (L_Symbol symbol : symbols){
+    		symbol.callback.call(mainTurtle);
+    	}
+    }
+
+    public boolean testRule(L_Rule rule)
     {
+    	// println("testRule");
         for (int s = 0; s < symbols.size(); s++)
         {
+
             for (int rs = 0; rs < rule.search.size(); rs++)
             {
-                if (symbols.get(s + rs).name != rule.search.get(rs).name)
+            	// println(s + ", " + rs + " " + symbols.get(s + rs).touched);
+                if (s + rs > symbols.size() -1 || symbols.get(s + rs).touched == true || symbols.get(s + rs).name != rule.search.get(rs).name)
                 {
                     //doesn't match
                     break;
@@ -31,10 +43,11 @@ public class L_Set
                 {
                     //match
                     applyRuleAtPosition(rule, s);
-                    return;
+                    // return true;
                 }
             }
         }
+        return false;
     }
 
     public void applyRuleAtPosition(L_Rule rule, int pos)
@@ -45,7 +58,8 @@ public class L_Set
         }
         for (int i = 0; i < rule.replace.size(); i++)
         {
-            symbols.add(pos, rule.replace.get(i).clone());
+            symbols.add(pos+i, rule.replace.get(i).clone());
+            symbols.get(pos+i).touched = true;
         }
     }
 
