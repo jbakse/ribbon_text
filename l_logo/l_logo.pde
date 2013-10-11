@@ -5,6 +5,8 @@
 
 Turtle mainTurtle;
 
+float unitSize=20;
+
 void setup()
 {
 	size(800, 400);
@@ -23,91 +25,13 @@ void draw()
 
 void drawOnce()
 {
-	//zigZag(mainTurtle, 15, 8, radians(45));
-	//mainTurtle.rotateBy(5 * (frameCount % 4));
-	background(230);
-	
-	float boxW=100;
-	float boxH=100;
-	float boxX=(width-boxW)/2;
-	float boxY=(height-boxH)/2;
-	float rows = 4;
-	float cols = 4;
-	float w = boxW/cols;
-	float h = boxH/rows;
-	
-
-	mainTurtle.setVisible(true);
-	for(int r=0; r<rows; r++){
-		for(int c=0; c<cols; c++){	
-			block(mainTurtle, boxX + (c*w), boxY + (r*h), w, h, (c+r)%2, random(.05, .7));
-		}
-	}
-
-	mainTurtle.moveTo(width * .5, height * .5);
-	mainTurtle.rotateTo(radians(270));
-	float delta = random(-.5, .5);
-	for (int i = 0; i < 100; i++){
-		delta += random(-.1, .1);
-		if (delta < -1){
-			delta += .2;
-		}
-		if (delta > 1){
-			delta -= .2;
-		}
-		//! HIDING MAIN LINE
-		mainTurtle.setVisible(false);
-		mainTurtle.forwardLine(10);
-		mainTurtle.rotateBy(delta);
-		mainTurtle.setVisible(true);
-		Turtle zigTurtle = mainTurtle.clone();
-		int dir=1;
-		if(i%2==0) dir = -1;
-		zigTurtle.rotateBy(radians(90)*dir);
-		zigZag(zigTurtle, 4, 6, radians(random(15, 80)));
-	}
-}
-
-void zigZag(Turtle _turtle, float _segmentCount, float _segLength, float _segAngle)
-{
-	// _mainTurtle.rotateTo(_startAngle);
-	_turtle.rotateBy(_segAngle);
-	_turtle.forwardLine(_segLength * .5);
-	int dir = 1;
-	for (int i = 0; i < _segmentCount; i++) {
-		dir = (i % 2 == 0) ? 1 : -1;
-		_turtle.rotateBy(_segAngle * 2 * dir);
-		_turtle.forwardLine(_segLength);
-		
-	}
-	_turtle.rotateBy(_segAngle * -dir);
-	_turtle.forwardLine(_segLength * .5);
-}
-
-void block(Turtle _turtle, float _x, float _y, float _width, float _height, int _dir, float _density)
-{
-	//space the lines out based on the density 1 being very very full/close together
-	_density = clamp(abs(_density), 0.01, 1);
-	float spacing = 0; //space between lines
-	//*
-	if(_dir == 0){
-		//horizontal
-		spacing = _height / (_height*_density);
-		_turtle.rotateToDeg(0);
-		for(int line = 0; line < _height/spacing; line++){
-			_turtle.moveTo(_x, _y + (line*spacing));
-			_turtle.forwardLine(_width);
-		}
-	}else{
-		//vertical
-		spacing = _width / (_width*_density);
-		_turtle.rotateToDeg(90);
-		for(int line = 0; line < _width/spacing; line++){
-			_turtle.moveTo(_x + (line * spacing), _y);
-			_turtle.forwardLine(_height);
-		}
-	}
-	//*/
+	//mainTurtle.rotateTo(radians(random(0, 180)));
+	//mainTurtle.forwardLine(unitSize);
+	diamondSmall(mainTurtle);
+	diamondLarge(mainTurtle);
+	spiralClockwise(mainTurtle);
+	spiralClockwise(mainTurtle);
+	spiralCounterClockwise(mainTurtle);
 }
 
 float clamp(float _val, float _min, float _max)
@@ -118,4 +42,58 @@ float clamp(float _val, float _min, float _max)
 		return _max;
 	}
 	return _val;
+}
+
+
+//SIMPLE COMMANDS
+void spiralClockwise(Turtle _turtle)
+{
+	spiral(_turtle, 1);
+}
+void spiralCounterClockwise(Turtle _turtle)
+{
+	spiral(_turtle, -1);
+}
+
+void diamondSmall(Turtle _turtle)
+{
+	diamond(_turtle, .5);
+}
+
+void diamondLarge(Turtle _turtle)
+{
+	diamond(_turtle, 1);
+}
+
+
+
+//COMMANDS
+void spiral(Turtle _turtle, int dir)
+{
+	float spiralSize = 37;
+	for(int i=0; i<spiralSize; i++){
+		_turtle.rotateBy(radians(i*1.2)*dir);
+		_turtle.forwardLine(unitSize*.5);
+	}
+}
+void diamond(Turtle _turtle, float _size)
+{
+	_turtle.rotateBy(radians(-45));
+	_turtle.forwardLine(unitSize*_size);
+	for(int i = 0; i<3; i++){
+		_turtle.rotateBy(radians(90));
+		_turtle.forwardLine(unitSize*_size);
+	}
+	//move to the other side of the diamond
+	for(int i = 0; i<2; i++){
+		_turtle.rotateBy(radians(90));
+		_turtle.forward(unitSize*_size);
+	}
+	//rotate back the right direction
+	_turtle.rotateBy(radians(-45));
+}
+
+void uturn(Turtle _turtle)
+{
+
 }
