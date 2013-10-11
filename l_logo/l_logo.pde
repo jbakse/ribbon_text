@@ -3,6 +3,8 @@
 // A bare bones logo like thing for drawing turtle trails. Maybe they'd be fun to have the Drawbot draw.
 
 
+L_Set lSet;
+
 Turtle mainTurtle;
 
 float unitSize=20;
@@ -14,6 +16,46 @@ void setup()
 	mainTurtle = new Turtle();
 	mainTurtle.moveTo(width * .5, height * .5);
 	drawOnce();
+
+	lSet = new L_Set();
+
+
+	L_Symbol a = new L_Symbol();
+	a.name = "a";
+	a.callback = new L_Callback(){
+		public void call(Turtle t) {
+			spiralClockwise(t);
+		}
+	};
+
+	L_Symbol b = new L_Symbol();
+	b.name = "b";
+	b.callback = new L_Callback(){
+		public void call(Turtle t) {
+			spiralClockwise(t);
+		}
+	};
+
+ 	L_Rule rule1 = new L_Rule();
+ 	rule1.search.add(a.clone());
+ 	rule1.replace.add(a.clone());
+ 	rule1.replace.add(b.clone());
+
+
+ 	L_Rule rule2 = new L_Rule();
+ 	rule2.search.add(b.clone());
+ 	rule2.replace.add(a.clone());
+ 	
+
+ 	lSet.symbols.add(a.clone());
+	lSet.symbols.add(b.clone());
+	lSet.rules.add(rule1);
+	lSet.rules.add(rule2);
+
+	for (int i = 0; i < 4; i++){
+		println(lSet);
+		lSet.step();
+	}
 }
 
 void draw()
