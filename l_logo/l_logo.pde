@@ -66,14 +66,23 @@ void draw()
 }
 
 void drawOnce()
-{
+{	
+	figureS(mainTurtle);
+	//*
+	loopdy(mainTurtle);
+	leftL(mainTurtle);
 	//mainTurtle.rotateTo(radians(random(0, 180)));
 	//mainTurtle.forwardLine(unitSize);
 	diamondSmall(mainTurtle);
+	
+	spiralClockwise(mainTurtle);
+	rightL(mainTurtle);
 	diamondLarge(mainTurtle);
-	spiralClockwise(mainTurtle);
-	spiralClockwise(mainTurtle);
 	spiralCounterClockwise(mainTurtle);
+
+	rightL(mainTurtle);
+	rightL(mainTurtle);
+	//*/
 }
 
 float clamp(float _val, float _min, float _max)
@@ -107,7 +116,40 @@ void diamondLarge(Turtle _turtle)
 	diamond(_turtle, 1);
 }
 
+void rightL(Turtle _turtle)
+{
+	_turtle.forwardLine(unitSize*.5);
+	_turtle.rotateBy(radians(90));
+	_turtle.forwardLine(unitSize*.5);
+}
 
+void leftL(Turtle _turtle)
+{
+	_turtle.forwardLine(unitSize*.5);
+	_turtle.rotateBy(radians(-90));
+	_turtle.forwardLine(unitSize*.5);
+}
+
+void loopdy(Turtle _turtle)
+{
+	_turtle.forwardLine(unitSize*.2);
+	float steps = 12;
+	for(float i=0; i<360; i+=360/steps){
+		_turtle.rotateBy(radians(360/steps));
+		_turtle.forwardLine(unitSize*.5);
+	}
+	_turtle.forwardLine(unitSize*.2);
+}
+
+void figureS(Turtle _turtle){
+	float curSin = 0;
+	float steps = 12;
+	for(int i=0; i<steps; i++){
+		_turtle.rotateBy(sin(curSin));
+		_turtle.forwardLine(unitSize*.3);
+		curSin +=.5;
+	}
+}
 
 //COMMANDS
 void spiral(Turtle _turtle, int dir)
@@ -133,9 +175,4 @@ void diamond(Turtle _turtle, float _size)
 	}
 	//rotate back the right direction
 	_turtle.rotateBy(radians(-45));
-}
-
-void uturn(Turtle _turtle)
-{
-
 }
