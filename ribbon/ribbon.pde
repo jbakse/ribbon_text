@@ -1,6 +1,8 @@
-// String inputText = "It is known+that+there are an-infinite number+of+worlds,<simply because-there is an-infinite amount of space-for-them-to be in.>However, not every one of them is inhabited. Therefore, there must be a finite number of inhabited worlds. Any finite number divided by infinity is as near to nothing as makes no odds, so the average population of all the planets in the Universe can be said to be zero. From this it follows that the population of the whole Universe is also zero, and that any people you may meet from time to time are merely the products of a deranged imagination.";
+// String inputText = "It is known+that+there are an-infinite number+of+worlds,<simply because-there is an infinite amount of space-for-them-to be in.>However, not every one of them is inhabited. Therefore, there must be a finite number of inhabited worlds. Any finite number divided by infinity is as near to nothing as makes no odds, so the average population of all the planets in the Universe can be said to be zero. From this it follows that the population of the whole Universe is also zero, and that any people you may meet from time to time are merely the products of a deranged imagination.";
 
-String inputText = "It is known+that+there are an<infinite+number of+worlds>simply because+there is-an+infinite-amount-of-space.";
+String inputText = "[It is known+that+there are an<infinite+number of+worlds>simply because+there is-an infinite-amount-of-space+for+them+to+be+in][However+not<every one of them>is inhabited]";
+
+// String inputText = "[a";
 
 
 float gridHeight = 16;
@@ -9,14 +11,15 @@ float gridWidth = 8;
 
 PShape ribbon_N;
 PShape ribbon_BL;
-PShape ribbon_BR;
+PShape ribbon_BR; 
 PShape ribbon_TL;
 PShape ribbon_TR;
 PShape ribbonline_BL;
 PShape ribbonline_BR;
 PShape ribbonline_TL;
 PShape ribbonline_TR;
-
+PShape ribbonend_L;
+PShape ribbonend_R;
 
 void setup()
 {
@@ -30,6 +33,16 @@ void setup()
         line(x, 0, x, height);
     }
     for (int y = 0; y < height; y += gridHeight)
+    {
+        line(0, y, width, y);
+    }
+
+    stroke(145);
+    for (int x = 0; x < width; x += gridWidth * 10)
+    {
+        line(x, 0, x, height);
+    }
+    for (int y = 0; y < height; y += gridHeight * 10)
     {
         line(0, y, width, y);
     }
@@ -51,6 +64,9 @@ void setup()
     ribbonline_TL = loadShape("ribbonline_TL.svg");
     ribbonline_TR = loadShape("ribbonline_TR.svg");
 
+    ribbonend_L = loadShape("ribbonend_L.svg");
+    ribbonend_R = loadShape("ribbonend_R.svg");
+
 
     //process content
     inputText = inputText.toLowerCase();
@@ -59,10 +75,18 @@ void setup()
     //render ribbon
     int direction = 1;
     pushMatrix();
-    translate(gridWidth * 5, gridHeight * 5);
+    translate(gridWidth * 10, gridHeight * 2);
+    //ellipse(0, 0, 10, 10);
+
     for (String token : inputTokens)
     {
-        if (("+").equals(token))
+        //ellipse(0, 0, 4, 4);
+        println("Token : " + token);
+
+        if (("").equals(token)) {
+            //nothing
+        }
+        else if (("+").equals(token))
         {
             if (direction  == 1)
             {
@@ -112,22 +136,49 @@ void setup()
             translate(gridWidth * 2, 0);
             direction = +1;
         }
+        else if (("[").equals(token))
+        {
+            shape(ribbonend_R, 0 , 0, gridWidth * 2, gridHeight);
+            translate(gridWidth * 2 * direction, 0);
+        }
+         else if (("]").equals(token))
+        {
+            shape(ribbonend_L, 0 , 0, gridWidth * 2, gridHeight);
+            translate(gridWidth * 4 * direction, 0);
+        }
+
         else
         {
+            while (token.length() < 2) {
+                token += " ";
+            }
+
             if (direction == -1)
             {
-                translate(-gridWidth * (token.length() - 2), 0);
+                translate(-gridWidth * (token.length() - 4), 0);
+            }
+            else
+            {
+                translate(gridWidth * -2, 0);
             }
             for (int i = 0; i < token.length(); i++)
             {
 
                 String c = Character.toString(token.charAt(i));
+                if (i > 1 && i < token.length() - 2)
+                {
+                    shape(ribbon_N, 0, 0, gridWidth, gridHeight);
+                }
                 drawCharacter(c);
                 translate(gridWidth, 0);
             }
             if (direction == -1)
             {
-                translate(-gridWidth * (token.length() + 2), 0);
+                translate(-gridWidth * (token.length()), 0);
+            }
+            else 
+            {
+                translate(gridWidth * -2, 0);
             }
         }
     }
@@ -145,7 +196,7 @@ ArrayList<String> tokenize(String _text)
     for (int i = 0; i < _text.length(); i++)
     {
         String c = Character.toString(inputText.charAt(i));
-        if (("+-<>").contains(c))
+        if (("+-<>[]").contains(c))
         {
             tokens.add(currentWord);
             currentWord = "";
@@ -187,7 +238,7 @@ void drawTurnBR()
 void drawCharacter(String c)
 {
 
-    text(c, 2, gridHeight - 4);
+    text(c, 1, gridHeight - 4);
     //    rect(0, 0, gridWidth, gridHeight);
-    shape(ribbon_N, 0, 0, gridWidth, gridHeight);
+    // shape(ribbon_N, 0, 0, gridWidth, gridHeight);
 }
