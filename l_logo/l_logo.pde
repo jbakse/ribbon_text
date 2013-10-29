@@ -1,3 +1,5 @@
+import processing.pdf.*;
+
 // Drawbot Logo
 
 // A bare bones logo like thing for drawing turtle trails. Maybe they'd be fun to have the Drawbot draw.
@@ -27,7 +29,7 @@ void setup()
     {
         public void call(Turtle t)
         {
-            figureS(t);
+            forward(t);
         }
     };
 
@@ -37,7 +39,7 @@ void setup()
     {
         public void call(Turtle t)
         {
-            leftL(t);
+            left(t);
         }
     };
 
@@ -47,32 +49,44 @@ void setup()
     {
         public void call(Turtle t)
         {
-            rightL(t);
+            right(t);
         }
     };
 
+
+
     L_Rule rule1 = new L_Rule();
+    rule1.search.add(f.clone());
     rule1.search.add(f.clone());
     rule1.replace.add(l.clone());
     rule1.replace.add(f.clone());
     rule1.replace.add(f.clone());
-    rule1.replace.add(r.clone());
-
+    rule1.replace.add(f.clone());
+    lSet.rules.add(rule1);
 
     L_Rule rule2 = new L_Rule();
-    rule2.search.add(r.clone());
+    rule2.search.add(l.clone());
+    rule2.search.add(f.clone());
     rule2.replace.add(r.clone());
-    rule2.replace.add(f.clone());
-
+    rule2.replace.add(l.clone());
+    lSet.rules.add(rule2);
 
 
     lSet.symbols.add(f.clone());
+    lSet.symbols.add(f.clone());
+    lSet.symbols.add(f.clone());
+    lSet.symbols.add(f.clone());
+    lSet.symbols.add(f.clone());
+    lSet.symbols.add(f.clone());
+    lSet.symbols.add(f.clone());
+    lSet.symbols.add(f.clone());
 
 
-    // lSet.symbols.add(b.clone());
-    lSet.rules.add(rule1);
-    lSet.rules.add(rule2);
 
+
+
+
+    lSet.step();
     drawOnce();
 }
 
@@ -83,8 +97,14 @@ void draw()
 }
 void mousePressed()
 {
-
+    lSet.step();
     drawOnce();
+}
+
+void keyPressed(){
+     beginRecord(PDF, "turtle.pdf"); 
+     drawOnce();
+     endRecord();
 }
 
 void drawOnce()
@@ -94,8 +114,9 @@ void drawOnce()
 
 	mainTurtle.moveTo(width*.5, height*.5);
 	mainTurtle.rotateTo(0);
-	lSet.step();
+	
     lSet.run();
+    rect(10, 10, 10, 10);
 }
 
 float clamp(float _val, float _min, float _max)
@@ -110,6 +131,25 @@ float clamp(float _val, float _min, float _max)
     }
     return _val;
 }
+
+
+void forward(Turtle _turtle)
+{
+    _turtle.forwardLine(5);
+}
+
+void left(Turtle _turtle)
+{
+    _turtle.rotateBy(10);
+}
+
+
+void right(Turtle _turtle)
+{
+    _turtle.rotateBy(10);
+}
+
+
 
 
 //SIMPLE COMMANDS
