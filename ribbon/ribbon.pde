@@ -25,8 +25,9 @@ PShape up_full;
 
 void setup()
 {
-	size(1000, 300);
-
+	size(1000, 600);
+    scale(2);
+    
 	//draw grid
 	background(125);
 	stroke(135);
