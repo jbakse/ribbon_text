@@ -115,21 +115,21 @@ void drawBackground()
 
 void render()
 {
-    drawBackground();
+	drawBackground();
 
 	//process content
 	String lines[] = loadStrings("input.txt");
 
 	for (int i = 0; i < lines.length; i++) {
 
-		int x = int(lines[i].substring(0, 2));
-		int y = int(lines[i].substring(2, 4));
+		int x = int(lines[i].substring(0, 3));
+		int y = int(lines[i].substring(3, 6));
 		// println("pos " + x + " '" + lines[i].substring(0, 2) + "' "  + y + " '" + lines[i].substring(2, 4) +"' ");
-		inputText = lines[i].substring(4).toLowerCase();
+		inputText = lines[i].substring(6).toLowerCase();
 		ArrayList<String> inputTokens = tokenize(inputText);
 
 
-		
+
 
 
 		//beginRecord(PDF, "output.pdf");
@@ -154,12 +154,13 @@ void drawRibbon(ArrayList<String>  inputTokens)
 
 
 	//ellipse(0, 0, 10, 10);
-
+	int pos = 0;
 	for (String token : inputTokens) {
 		//ellipse(0, 0, 4, 4);
 		println("Token : " + token);
 
 		if (("").equals(token)) {
+			println("empty");
 			//nothing
 		}
 		else if (("+").equals(token) || ("+0").equals(token)) { // half step
@@ -253,7 +254,13 @@ void drawRibbon(ArrayList<String>  inputTokens)
 		else if (("]").equals(token)) {
 			shape(end, 0 , 0, gridWidth * 2, gridHeight);
 			translate(gridWidth * 8 * direction, 0);
+			if (pos == 0) {
+                println("start flip");
+                translate(gridWidth * -8 * direction, 0);
+                direction = -1;
+			}
 		}
+
 
 		else {
 			while (token.length() < 2) {
@@ -292,6 +299,7 @@ void drawRibbon(ArrayList<String>  inputTokens)
 				translate(gridWidth * -2, 0);
 			}
 		}
+		pos++;
 	}
 
 }
@@ -303,7 +311,9 @@ ArrayList<String> tokenize(String _text)
 	for (int i = 0; i < _text.length(); i++) {
 		String c = Character.toString(inputText.charAt(i));
 		if (("+-<>[]").contains(c)) {
-			tokens.add(currentWord);
+			if (!currentWord.equals("")) {
+				tokens.add(currentWord);
+			}
 			currentWord = "";
 			if (i < _text.length() - 1) {
 				String next = Character.toString(inputText.charAt(i + 1));
@@ -312,6 +322,7 @@ ArrayList<String> tokenize(String _text)
 					i += 1;
 				}
 			}
+			println("add " + c);
 			tokens.add(c);
 		}
 		else if (("abcdefghijklmnopqrstuvwxyz .,!?0123456789").contains(c)) {
