@@ -70,6 +70,12 @@ void setup()
 	letters.put(".", loadShape(font + "char_period.svg"));
 	letters.put("?", loadShape(font + "char_question.svg"));
 
+	letters.put("'", loadShape(font + "char_apostrophe.svg"));
+	letters.put("_", loadShape(font + "char_dash.svg"));
+	letters.put("\"", loadShape(font + "char_doublequote.svg"));
+	letters.put(";", loadShape(font + "char_semicolon.svg"));
+	letters.put("'", loadShape(font + "char_singlequote.svg"));
+	letters.put("~", loadShape(font + "char_tilde.svg"));
 
 
 
@@ -157,10 +163,10 @@ void drawRibbon(ArrayList<String>  inputTokens)
 	int pos = 0;
 	for (String token : inputTokens) {
 		//ellipse(0, 0, 4, 4);
-		println("Token : " + token);
+	
 
 		if (("").equals(token)) {
-			println("empty");
+			
 			//nothing
 		}
 		else if (("+").equals(token) || ("+0").equals(token)) { // half step
@@ -255,7 +261,6 @@ void drawRibbon(ArrayList<String>  inputTokens)
 			shape(end, 0 , 0, gridWidth * 2, gridHeight);
 			translate(gridWidth * 8 * direction, 0);
 			if (pos == 0) {
-                println("start flip");
                 translate(gridWidth * -8 * direction, 0);
                 direction = -1;
 			}
@@ -276,12 +281,11 @@ void drawRibbon(ArrayList<String>  inputTokens)
 			for (int i = 0; i < token.length(); i++) {
 
 				String c = Character.toString(token.charAt(i));
-				println("i " + i);
+				
 				if (i > 1 && i < token.length() - 2) {
-					println("draw straight");
+					//println("draw straight");
 					shape(straight, 0, 0, gridWidth, gridHeight);
 				}
-				println("draw " + c);
 				//text(c, 1, gridHeight - 4);
 				if (letters.containsKey(c)) {
 					pushMatrix();
@@ -325,7 +329,7 @@ ArrayList<String> tokenize(String _text)
 			println("add " + c);
 			tokens.add(c);
 		}
-		else if (("abcdefghijklmnopqrstuvwxyz .,!?0123456789").contains(c)) {
+		else if (("abcdefghijklmnopqrstuvwxyz .,!'\"_;~?0123456789").contains(c)) {
 			currentWord += c;
 		}
 	}
