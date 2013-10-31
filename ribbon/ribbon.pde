@@ -39,7 +39,7 @@ PShape start_alt3;
 PShape start_alt4;
 PShape start_alt5;
 
-
+PShape down_3;
 
 
 void setup()
@@ -82,6 +82,7 @@ void setup()
 	start_alt4 = loadShape(tileSet + "start_alt4.svg");
 	start_alt5 = loadShape(tileSet + "start_alt5.svg");
 
+	down_3 = loadShape(tileSet + "down_3.svg");
 
 	String font = "fonts/mono_stroked/";
 	String chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -150,7 +151,7 @@ void render()
 
 	//process content
 	String lines[] = loadStrings("input.txt");
-
+	beginRecord(PDF, "output.pdf");
 	for (int i = 0; i < lines.length; i++) {
 
 		int x = int(lines[i].substring(0, 3));
@@ -163,15 +164,16 @@ void render()
 
 
 
-		//beginRecord(PDF, "output.pdf");
+
+		pushMatrix();
 		{
-			pushMatrix();
 			translate(gridWidth * x, gridHeight * y * .5);
 			drawRibbon(inputTokens);
-			popMatrix();
 		}
-		//endRecord();
+		popMatrix();
+
 	}
+	endRecord();
 
 }
 
@@ -228,6 +230,16 @@ void drawRibbon(ArrayList<String>  inputTokens)
 				shape(up_full_front, 0 , 0, gridWidth * 2, gridHeight);
 			}
 			translate(gridWidth * 2 * direction, 0);
+		}
+		else if (("+3").equals(token)) { // full step front
+			if (direction == 1) {
+				shape(down_3, 0 , 0, gridWidth * 2, gridHeight);
+				translate(0, gridHeight * 3);
+			}
+			else {
+				//usported
+			}
+			translate(gridWidth * 0 * direction, 0);
 		}
 		else if (("-0").equals(token)) {
 			if (direction == 1) {
