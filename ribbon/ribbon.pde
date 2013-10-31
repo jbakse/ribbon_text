@@ -4,7 +4,7 @@ import processing.pdf.*;
 
 // String inputText = "[It is known  +  that  +  there are an<infinite+  +  +  +number of+worlds>simply because+there is-an infinite-amount-of-space+for+them+to+be+in][However+not<every one of them>is inhabited]";
 
-String inputText = "[apple+0bear+1cat  +2  dog<apple cart-0bear-1  cat woman  -2dog  [";
+String inputText = "[abcde-0abcde-1abcde  -2  abcde+0abcde+1abcde  +2 abcde<  abcd+0abcd+1  abcd+2abcd  -0abcd-1  abcd  -2abcd  [";
 
 
 float gridHeight = 16;
@@ -30,26 +30,12 @@ PShape up_full;
 
 void setup()
 {
-	size(1000, 600);
-	scale(2);
+	float windowScale = 20;
+	size((int)(60 * windowScale), (int)(25 * windowScale));
+	gridWidth = windowScale * .5;
+	gridHeight = windowScale;
 
-	//draw grid
-	background(125);
-	stroke(135);
-	for (int x = 0; x < width; x += gridWidth) {
-		line(x, 0, x, height);
-	}
-	for (int y = 0; y < height; y += gridHeight) {
-		line(0, y, width, y);
-	}
 
-	stroke(145);
-	for (int x = 0; x < width; x += gridWidth * 10) {
-		line(x, 0, x, height);
-	}
-	for (int y = 0; y < height; y += gridHeight * 10) {
-		line(0, y, width, y);
-	}
 
 	//set drawing colors
 	fill(0);
@@ -88,52 +74,119 @@ void setup()
 
 
 
-	//process content
-	inputText = inputText.toLowerCase();
-	ArrayList<String> inputTokens = tokenize(inputText);
+
 
 	//render ribbon
-	beginRecord(PDF, "output.pdf");
-	int direction = 1;
+	render();
+}
 
-	noFill();
-	noStroke();
+void draw()
+{
+	if (frameCount % 90 == 0) {
+		render();
+	}
+}
+
+void mousePressed()
+{
+	render();
+}
+
+void drawBackground()
+{
+	//draw grid
+	background(125);
+	stroke(135);
+	for (int x = 0; x < width; x += gridWidth) {
+		line(x, 0, x, height);
+	}
+	for (int y = 0; y < height; y += gridHeight) {
+		line(0, y, width, y);
+	}
+
+	stroke(145);
+	for (int x = 0; x < width; x += gridWidth * 10) {
+		line(x, 0, x, height);
+	}
+	for (int y = 0; y < height; y += gridHeight * 10) {
+		line(0, y, width, y);
+	}
+}
+
+void render()
+{
+	drawBackground();
+
+	//process content
+	String lines[] = loadStrings("input.txt");
+
+	for (int i = 0; i < lines.length; i++) {
+
+		int x = int(lines[i].substring(0, 3));
+		int y = int(lines[i].substring(3, 6));
+		// println("pos " + x + " '" + lines[i].substring(0, 2) + "' "  + y + " '" + lines[i].substring(2, 4) +"' ");
+		inputText = lines[i].substring(6).toLowerCase();
+		ArrayList<String> inputTokens = tokenize(inputText);
+
+
+
+
+
+		//beginRecord(PDF, "output.pdf");
+		{
+			pushMatrix();
+			translate(gridWidth * x, gridHeight * y * .5);
+			drawRibbon(inputTokens);
+			popMatrix();
+		}
+		//endRecord();
+	}
+
+}
+
+
+void drawRibbon(ArrayList<String>  inputTokens)
+{
 	fill(255, 0, 0);
 	stroke(0, 255, 0);
 
-	pushMatrix();
-	translate(gridWidth * 20, gridHeight * 2);
-	//ellipse(0, 0, 10, 10);
+	int direction = 1;
 
+
+	//ellipse(0, 0, 10, 10);
+	int pos = 0;
 	for (String token : inputTokens) {
 		//ellipse(0, 0, 4, 4);
 		println("Token : " + token);
 
 		if (("").equals(token)) {
+			println("empty");
 			//nothing
 		}
-        else if (("+").equals(token) || ("+0").equals(token)) { // half step
-            if (direction == 1) {
-                shape(down_half, 0 , 0, gridWidth * 2, gridHeight);
-                translate(0, gridHeight * .5);
-            }
-            else {
-                translate(0, gridHeight * .5);
-                shape(up_half, 0 , 0, gridWidth * 2, gridHeight);
-            }
-            translate(gridWidth * 5 * direction, 0);
-        }
-        else if (("+1").equals(token)) { // full step normal
-            if (direction == 1) {
-                shape(down_full, 0 , 0, gridWidth * 2, gridHeight);
-                translate(0, gridHeight);
-            }
-            else {
-                translate(0, gridHeight);
-                shape(up_full, 0 , 0, gridWidth * 2, gridHeight);
-            }
-            translate(gridWidth * 2 * direction, 0);
-        }
+		else if (("+").equals(token) || ("+0").equals(token)) { // half step
+			if (direction == 1) {
+				shape(down_half, 0 , 0, gridWidth * 2, gridHeight);
+				translate(0, gridHeight * .5);
+				translate(gridWidth * 5 * direction, 0);
+			}
+			else {
+				translate(0, gridHeight * .5);
+				translate(gridWidth * 1 * direction, 0);
+				shape(up_half, 0 , 0, gridWidth * 2, gridHeight);
+				translate(gridWidth * 2 * direction, 0);
+			}
+		}
+		else if (("+1").equals(token)) { // full step normal
+			if (direction == 1) {
+				shape(down_full, 0 , 0, gridWidth * 2, gridHeight);
+				translate(0, gridHeight);
+			}
+			else {
+				translate(0, gridHeight);
+				shape(up_full, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			translate(gridWidth * 2 * direction, 0);
+		}
 		else if (("+2").equals(token)) { // full step front
 			if (direction == 1) {
 				shape(down_full_front, 0 , 0, gridWidth * 2, gridHeight);
@@ -145,43 +198,43 @@ void setup()
 			}
 			translate(gridWidth * 2 * direction, 0);
 		}
-        else if (("-0").equals(token)) {
-            if (direction == 1) {
-                shape(up_half, 0 , 0, gridWidth * 2, gridHeight);
-                translate(0, -gridHeight*.5);
-                translate(gridWidth * 5 * direction, 0);
-            }
-            else {
-                translate(gridWidth * 3 * direction, 0);
-                translate(0, -gridHeight*.5);
-                shape(down_half, 0 , 0, gridWidth * 2, gridHeight);
-                translate(gridWidth * 2 * direction, 0);
-            }
-            
-        }
+		else if (("-0").equals(token)) {
+			if (direction == 1) {
+				shape(up_half, 0 , 0, gridWidth * 2, gridHeight);
+				translate(0, -gridHeight * .5);
+				translate(gridWidth * 5 * direction, 0);
+			}
+			else {
+				translate(gridWidth * 3 * direction, 0);
+				translate(0, -gridHeight * .5);
+				shape(down_half, 0 , 0, gridWidth * 2, gridHeight);
+				translate(gridWidth * 2 * direction, 0);
+			}
+
+		}
 		else if (("-1").equals(token)) {
 			if (direction == 1) {
 				shape(up_full, 0 , 0, gridWidth * 2, gridHeight);
 				translate(0, -gridHeight);
-			    translate(gridWidth * 2 * direction, 0);
-            }
-            else {
-                translate(0, -gridHeight);
-                shape(down_full, 0 , 0, gridWidth * 2, gridHeight);
-            }
+				translate(gridWidth * 2 * direction, 0);
+			}
+			else {
+				translate(0, -gridHeight);
+				shape(down_full, 0 , 0, gridWidth * 2, gridHeight);
+			}
 		}
-        else if (("-2").equals(token)) {
-            if (direction == 1) {
-                shape(up_full_front, 0 , 0, gridWidth * 2, gridHeight);
-                translate(0, -gridHeight);
-                translate(gridWidth * 2 * direction, 0);
-            }
-            else {
-                translate(0, -gridHeight);
-                shape(down_full_front, 0 , 0, gridWidth * 2, gridHeight);
-                translate(gridWidth * 2 * direction, 0);
-            }
-        }
+		else if (("-2").equals(token)) {
+			if (direction == 1) {
+				shape(up_full_front, 0 , 0, gridWidth * 2, gridHeight);
+				translate(0, -gridHeight);
+				translate(gridWidth * 2 * direction, 0);
+			}
+			else {
+				translate(0, -gridHeight);
+				shape(down_full_front, 0 , 0, gridWidth * 2, gridHeight);
+				translate(gridWidth * 2 * direction, 0);
+			}
+		}
 		else if (("<").equals(token)) {
 			shape(turn_end, 0 , 0, gridWidth * 2, gridHeight);
 			translate(0, gridHeight);
@@ -201,7 +254,13 @@ void setup()
 		else if (("]").equals(token)) {
 			shape(end, 0 , 0, gridWidth * 2, gridHeight);
 			translate(gridWidth * 8 * direction, 0);
+			if (pos == 0) {
+                println("start flip");
+                translate(gridWidth * -8 * direction, 0);
+                direction = -1;
+			}
 		}
+
 
 		else {
 			while (token.length() < 2) {
@@ -227,6 +286,7 @@ void setup()
 				if (letters.containsKey(c)) {
 					pushMatrix();
 					//scale(.7); translate(0, gridHeight * .25);
+					translate(0, .5 * gridHeight); scale(.75); translate(0, -.5 * gridHeight);
 					shape(letters.get(c), 0, 0, gridWidth, gridHeight);
 					popMatrix();
 				}
@@ -239,9 +299,8 @@ void setup()
 				translate(gridWidth * -2, 0);
 			}
 		}
+		pos++;
 	}
-	popMatrix();
-	endRecord();
 
 }
 
@@ -252,7 +311,9 @@ ArrayList<String> tokenize(String _text)
 	for (int i = 0; i < _text.length(); i++) {
 		String c = Character.toString(inputText.charAt(i));
 		if (("+-<>[]").contains(c)) {
-			tokens.add(currentWord);
+			if (!currentWord.equals("")) {
+				tokens.add(currentWord);
+			}
 			currentWord = "";
 			if (i < _text.length() - 1) {
 				String next = Character.toString(inputText.charAt(i + 1));
@@ -261,9 +322,10 @@ ArrayList<String> tokenize(String _text)
 					i += 1;
 				}
 			}
+			println("add " + c);
 			tokens.add(c);
 		}
-		else if (("abcdefghijklmnopqrstuvwxyz ").contains(c)) {
+		else if (("abcdefghijklmnopqrstuvwxyz .,!?0123456789").contains(c)) {
 			currentWord += c;
 		}
 	}
