@@ -13,17 +13,31 @@ float gridWidth = 8;
 
 HashMap<String, PShape> letters = new HashMap<String, PShape>();
 
-PShape down_full_front;
-PShape down_full;
-PShape end;
-PShape turn_end;
-PShape up_full_front;
 PShape start;
-PShape turn_start;
-PShape up_half;
-PShape down_half;
+PShape end;
 PShape straight;
+
+PShape down_half;
+PShape down_full;
+PShape down_full_front;
+
+PShape up_half;
 PShape up_full;
+PShape up_full_front;
+
+PShape turn_end;
+PShape turn_start;
+
+PShape end_alt1;
+PShape end_alt2;
+PShape end_alt3;
+PShape end_alt4;
+PShape end_alt5;
+PShape start_alt1;
+PShape start_alt2;
+PShape start_alt3;
+PShape start_alt4;
+PShape start_alt5;
 
 
 
@@ -57,6 +71,17 @@ void setup()
 	straight = loadShape(tileSet + "straight.svg");
 	up_full = loadShape(tileSet + "up_full.svg");
 
+	end_alt1 = loadShape(tileSet + "end_alt1.svg");
+	end_alt2 = loadShape(tileSet + "end_alt2.svg");
+	end_alt3 = loadShape(tileSet + "end_alt3.svg");
+	end_alt4 = loadShape(tileSet + "end_alt4.svg");
+	end_alt5 = loadShape(tileSet + "end_alt5.svg");
+	start_alt1 = loadShape(tileSet + "start_alt1.svg");
+	start_alt2 = loadShape(tileSet + "start_alt2.svg");
+	start_alt3 = loadShape(tileSet + "start_alt3.svg");
+	start_alt4 = loadShape(tileSet + "start_alt4.svg");
+	start_alt5 = loadShape(tileSet + "start_alt5.svg");
+
 
 	String font = "fonts/mono_stroked/";
 	String chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -70,6 +95,12 @@ void setup()
 	letters.put(".", loadShape(font + "char_period.svg"));
 	letters.put("?", loadShape(font + "char_question.svg"));
 
+	letters.put("'", loadShape(font + "char_apostrophe.svg"));
+	letters.put("_", loadShape(font + "char_dash.svg"));
+	letters.put("\"", loadShape(font + "char_doublequote.svg"));
+	letters.put(";", loadShape(font + "char_semicolon.svg"));
+	letters.put("'", loadShape(font + "char_singlequote.svg"));
+	letters.put("~", loadShape(font + "char_tilde.svg"));
 
 
 
@@ -157,10 +188,10 @@ void drawRibbon(ArrayList<String>  inputTokens)
 	int pos = 0;
 	for (String token : inputTokens) {
 		//ellipse(0, 0, 4, 4);
-		println("Token : " + token);
+
 
 		if (("").equals(token)) {
-			println("empty");
+
 			//nothing
 		}
 		else if (("+").equals(token) || ("+0").equals(token)) { // half step
@@ -247,17 +278,50 @@ void drawRibbon(ArrayList<String>  inputTokens)
 			translate(gridWidth * 2, 0);
 			direction = +1;
 		}
-		else if (("[").equals(token)) {
-			shape(start, 0 , 0, gridWidth * 2, gridHeight);
+		else if (("[").equals(token.substring(0, 1))) {
+			if (token.length() == 1) {
+				shape(start, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("1")) {
+				shape(start_alt1, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("2")) {
+				shape(start_alt2, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("3")) {
+				shape(start_alt3, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("4")) {
+				shape(start_alt4, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("5")) {
+				shape(start_alt5, 0 , 0, gridWidth * 2, gridHeight);
+			}
 			translate(gridWidth * 2 * direction, 0);
 		}
-		else if (("]").equals(token)) {
-			shape(end, 0 , 0, gridWidth * 2, gridHeight);
+		else if (("]").equals(token.substring(0, 1))) {
+			if (token.length() == 1) {
+				shape(end, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("1")) {
+				shape(end_alt1, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("2")) {
+				shape(end_alt2, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("3")) {
+				shape(end_alt3, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("4")) {
+				shape(end_alt4, 0 , 0, gridWidth * 2, gridHeight);
+			}
+			else if (token.substring(1, 2).equals("5")) {
+				shape(end_alt5, 0 , 0, gridWidth * 2, gridHeight);
+			}
 			translate(gridWidth * 8 * direction, 0);
 			if (pos == 0) {
-                println("start flip");
-                translate(gridWidth * -8 * direction, 0);
-                direction = -1;
+				translate(gridWidth * -8 * direction, 0);
+				direction = -1;
 			}
 		}
 
@@ -276,12 +340,11 @@ void drawRibbon(ArrayList<String>  inputTokens)
 			for (int i = 0; i < token.length(); i++) {
 
 				String c = Character.toString(token.charAt(i));
-				println("i " + i);
+
 				if (i > 1 && i < token.length() - 2) {
-					println("draw straight");
+					//println("draw straight");
 					shape(straight, 0, 0, gridWidth, gridHeight);
 				}
-				println("draw " + c);
 				//text(c, 1, gridHeight - 4);
 				if (letters.containsKey(c)) {
 					pushMatrix();
@@ -325,7 +388,7 @@ ArrayList<String> tokenize(String _text)
 			println("add " + c);
 			tokens.add(c);
 		}
-		else if (("abcdefghijklmnopqrstuvwxyz .,!?0123456789").contains(c)) {
+		else if (("abcdefghijklmnopqrstuvwxyz .,!'\"_;~?0123456789").contains(c)) {
 			currentWord += c;
 		}
 	}
