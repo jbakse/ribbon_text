@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="146.1631" y1="64.4668" x2="222.829" y2="65.1333" gradientTransform="matrix(-1 0 0 1 185 0)">
+	<stop  offset="0" style="stop-color:#85AA00"/>
+	<stop  offset="1" style="stop-color:#A2CE00"/>
+</linearGradient>
+<polygon fill="url(#SVGID_1_)" points="-85,105 40,105 40,25 -85,25 -60,65 "/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="175" y1="89.75" x2="175" y2="109.2054" gradientTransform="matrix(-1 0 0 1 185 0)">
+	<stop  offset="0" style="stop-color:#85AA00"/>
+	<stop  offset="1" style="stop-color:#798E00"/>
+</linearGradient>
+<polygon fill="url(#SVGID_2_)" points="-20,90 40,105 40,25 -20,10 "/>
+<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="85" y1="50" x2="205" y2="50" gradientTransform="matrix(-1 0 0 1 185 0)">
+	<stop  offset="0" style="stop-color:#AFEF00"/>
+	<stop  offset="1" style="stop-color:#C8FF00"/>
+</linearGradient>
+<rect x="-20" y="10" fill="url(#SVGID_3_)" width="120" height="80"/>
+</svg>
