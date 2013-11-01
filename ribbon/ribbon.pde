@@ -58,7 +58,7 @@ void setup()
 
 
 	// load images
-	String tileSet = "ribbons/pirate/";
+	String tileSet = "ribbons/solidcandy/";
 	down_full_front = loadShape(tileSet + "down_full_front.svg");
 	down_full = loadShape(tileSet + "down_full.svg");
 	end = loadShape(tileSet + "end.svg");
@@ -82,7 +82,7 @@ void setup()
 	start_alt4 = loadShape(tileSet + "start_alt4.svg");
 	start_alt5 = loadShape(tileSet + "start_alt5.svg");
 
-	down_3 = loadShape(tileSet + "down_3.svg");
+	// down_3 = loadShape(tileSet + "down_3.svg");
 
 	String font = "fonts/mono_stroked/";
 	String chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -109,14 +109,14 @@ void setup()
 
 
 	//render ribbon
-	render();
+	//render();
 }
 
 void draw()
 {
-	if (frameCount % 90 == 0) {
-		render();
-	}
+//	if (frameCount % 90 == 0) {
+//		render();
+//	}
 }
 
 void mousePressed()
@@ -233,7 +233,7 @@ void drawRibbon(ArrayList<String>  inputTokens)
 		}
 		else if (("+3").equals(token)) { // full step front
 			if (direction == 1) {
-				shape(down_3, 0 , 0, gridWidth * 2, gridHeight);
+				//shape(down_3, 0 , 0, gridWidth * 2, gridHeight);
 				translate(0, gridHeight * 3);
 			}
 			else {
